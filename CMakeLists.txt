@@ -1,10 +1,12 @@
+cmake_minimum_required(VERSION 3.20.0)
+
+
 # print initial information about the project
 message("Running CMake on libdnf...")
 project(libdnf C CXX)
 
 
 # cmake requirements and policies
-cmake_minimum_required(VERSION 2.8.5)
 cmake_policy(SET CMP0005 OLD)
 # Avoid a warning because "hth" links to
 # the in-tree libhawkey, but uses pkg-config to find
@@ -52,7 +54,7 @@ endif()
 
 # build dependencies
 find_package(Gpgme REQUIRED)
-find_package(LibSolv 0.7.21 REQUIRED COMPONENTS ext)
+find_package(LibSolv REQUIRED COMPONENTS ext)
 
 
 # build dependencies via pkg-config
@@ -168,8 +170,8 @@ add_subdirectory(po)
 
 
 # build docs
-add_subdirectory(docs/libdnf)
-if(WITH_BINDINGS)
+if(WITH_DOCS)
+    add_subdirectory(docs/libdnf)
     add_subdirectory(docs/hawkey)
 endif()
 
