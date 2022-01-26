@@ -35,7 +35,9 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/utsname.h>
+#if __has_include(<wordexp.h>)
 #include <wordexp.h>
+#endif
 
 // libsolv
 extern "C" {
@@ -82,6 +84,7 @@ get_umask(void)
     return mask;
 }
 
+#if __has_include(<wordexp.h>)
 static int
 glob_for_cachedir(char *path)
 {
@@ -117,6 +120,7 @@ glob_for_cachedir(char *path)
     g_free(p);
     return ret;
 }
+#endif
 
 int
 checksum_cmp(const unsigned char *cs1, const unsigned char *cs2)
@@ -369,8 +373,10 @@ mkcachedir(char *path)
 {
     int ret = 1;
 
+#if __has_include(<wordexp.h>)
     if (!glob_for_cachedir(path))
         return 0;
+#endif
 
     const int len = strlen(path);
     if (len < 1 || path[0] != '/')
