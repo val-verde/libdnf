@@ -20,10 +20,11 @@ set(CMAKE_SWIG_FLAGS ${CMAKE_SWIG_FLAGS} "-DLIBDNF_UNSTABLE_API")
 function(libdnf_swig_module name)
     set(source ../swig/${name}.i)
     set_source_files_properties(${source} PROPERTIES CPLUSPLUS ON)
-    swig_add_module(${name} python ${source})
+    swig_add_library(_${name} LANGUAGE python SOURCES ${source})
+    set_target_properties(_${name} PROPERTIES OUTPUT_NAME ${name})
 
     foreach(lib ${ARGN})
-        swig_link_libraries(${name} ${lib})
+        swig_link_libraries(_${name} ${lib})
     endforeach()
 
     install(TARGETS _${name} LIBRARY DESTINATION ${PYTHON_INSTALL_DIR}/libdnf)
